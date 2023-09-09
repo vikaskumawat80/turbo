@@ -42,8 +42,10 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
         cache-dependency-path: 'with-npm/package-lock.json'
-    - run: npm install -D --arch=x64 --platform=linux turbo
-    - run: npm install -D --arch=arm64 --platform=darwin turbo
+    
+    - run: npm i turbo-linux-64@1.9.3
+    # - run: npm install -D --arch=x64 --platform=linux turbo
+    # - run: npm install -D --arch=arm64 --platform=darwin turbo
 
     - name: npm install, build, and test
       run: |

@@ -41,7 +41,7 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: '/with-npm'
+        cache-dependency-path: 'with-npm/package-lock.json'
     
     - name: Navigate to 'with-npm' folder
       run: cd with-npm

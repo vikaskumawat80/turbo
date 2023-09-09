@@ -41,10 +41,12 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
+    
+    - name: Navigate to 'with-npm' folder
+      run: cd with-npm
 
     - name: npm install, build, and test
       run: |
-        cd with-npm
         npm install
         npm run build --if-present
         npm run test --if-present

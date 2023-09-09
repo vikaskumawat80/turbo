@@ -42,12 +42,11 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
         cache-dependency-path: 'with-npm/package-lock.json'
-    - run: npm ci
-    - run: npm test
 
     - name: npm install, build, and test
       run: |
         cd with-npm
+        npm install turbo-linux-64 --global
         npm install
         npm run build --if-present
         npm run test --if-present

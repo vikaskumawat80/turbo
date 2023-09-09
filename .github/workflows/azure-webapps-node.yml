@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: your-app-name    # set this to your application's name
+  AZURE_WEBAPP_NAME: turbo-app    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: 'with-npm/next.zip'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '18.x'                # set this to the node version to use
 
@@ -44,8 +44,6 @@ jobs:
         cache-dependency-path: 'with-npm/package-lock.json'
     
     - run: npm i turbo-linux-64@1.9.3
-    # - run: npm install -D --arch=x64 --platform=linux turbo
-    # - run: npm install -D --arch=arm64 --platform=darwin turbo
 
     - name: npm install, build, and test
       run: |
@@ -64,28 +62,28 @@ jobs:
         name: node-app
         path: with-npm/next.zip
 
-  # deploy:
-  #   permissions:
-  #     contents: none
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   environment:
-  #     name: 'Development'
-  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  deploy:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Development'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-  #   steps:
-  #   - name: Download artifact from build job
-  #     uses: actions/download-artifact@v3
-  #     with:
-  #       name: node-app
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: node-app
 
-  #   - name: 'Deploy to Azure WebApp'
-  #     id: deploy-to-webapp
-  #     uses: azure/webapps-deploy@v2
-  #     with:
-  #       app-name: ${{ env.AZURE_WEBAPP_NAME }}
-  #       publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-  #       package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: 'Deploy to Azure WebApp'
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
     
-  #   - name: Delete zip file
-  #     run: rm with-npm/next.zip
+    - name: Delete zip file
+      run: rm with-npm/next.zip
